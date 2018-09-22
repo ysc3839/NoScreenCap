@@ -51,19 +51,19 @@ int main()
 	while(1)
 	{
 		uint32_t *func_name = (uint32_t *)(dll_base + *func_names);
-		if (func_name[0] == 0x50746547     // GetP
-			&& func_name[1] == 0x41636f72  // rocA
-			&& func_name[2] == 0x65726464) // ddre
+		if (func_name[0] == 0x50746547 && // GetP
+			func_name[1] == 0x41636f72 && // rocA
+			func_name[2] == 0x65726464)   // ddre
 			break;
 		++func_names;
 		++i;
 	}
 
 	typedef FARPROC (__stdcall *fnGetProcAddress)(HMODULE hModule, LPCSTR lpProcName);
-	fnGetProcAddress pGetProcAddress = (fnGetProcAddress)(dll_base + funcs[name_ords[i]]);
+	fnGetProcAddress get_proc_address = (fnGetProcAddress)(dll_base + funcs[name_ords[i]]);
 
 	typedef HMODULE (__stdcall *fnGetModuleHandleA)(LPCSTR lpModuleName);
-	fnGetModuleHandleA pGetModuleHandleA = (fnGetModuleHandleA)pGetProcAddress((HMODULE)dll_base, "GetModuleHandleA");
+	fnGetModuleHandleA get_module_handle = (fnGetModuleHandleA)get_proc_address((HMODULE)dll_base, "GetModuleHandleA");
 
-	return pGetProcAddress(pGetModuleHandleA("user32"), "SetWindowDisplayAffinity");
+	return get_proc_address(get_module_handle("user32"), "SetWindowDisplayAffinity");
 }
