@@ -27,7 +27,7 @@ constexpr auto CODE_X86_SIZE = sizeof(_CODE_X86);
 #define BuildX86Code(func_addr, affinity, base_address) \
 	uint8_t code[] = { CODE_X86 }; \
 	code[3] = static_cast<uint8_t>(affinity); \
-	*reinterpret_cast<void**>(&code[7]) = reinterpret_cast<void*>(reinterpret_cast<size_t>(func_addr) - (reinterpret_cast<size_t>(base_address) + 6) - 5);
+	*reinterpret_cast<uint32_t*>(&code[7]) = static_cast<uint32_t>(reinterpret_cast<size_t>(func_addr) - (reinterpret_cast<size_t>(base_address) + 6) - 5);
 
 // Source code: shellcode_x86_get_func_address.c
 #define CODE_GET_FUNC_ADDRESS_X86 \
