@@ -141,6 +141,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_CREATE:
 	{
+		if (g_darkModeSupported)
+		{
+			_AllowDarkModeForWindow(hWnd, true);
+			RefreshTitleBarThemeColor(hWnd);
+		}
+
 		HFONT hFont;
 		NONCLIENTMETRICSW ncm{ sizeof(ncm) };
 		if (SystemParametersInfoW(SPI_GETNONCLIENTMETRICS, sizeof(ncm), &ncm, 0) &&
@@ -305,6 +311,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 			DeferWindowPos(hDWP, g_hWndLVWindows, 0, 0, 0, clientWidth, clientHeight, SWP_NOZORDER);
 			EndDeferWindowPos(hDWP);
+		}
+	}
+	break;
+	case WM_SETTINGCHANGE:
+	{
+		if (IsColorSchemeChangeMessage(lParam))
+		{
+			RefreshTitleBarThemeColor(hWnd);
+			SendMessageW(g_hWndLVWindows, WM_THEMECHANGED, 0, 0);
 		}
 	}
 	break;

@@ -14,9 +14,12 @@
 #include <CommCtrl.h>
 #include <Uxtheme.h>
 #include <WindowsX.h>
+#include <Dwmapi.h>
+#include <Vssym32.h>
 
 #pragma comment(lib, "Comctl32.lib")
 #pragma comment(lib, "Uxtheme.lib")
+#pragma comment(lib, "Dwmapi.lib")
 
 #include "resource.h"
 
